@@ -3,8 +3,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AB GAMES — O Último Sinal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AB GAMES - O Último Sinal</title>
 
 <style>
 * { box-sizing: border-box; }
@@ -12,86 +12,43 @@
 body {
   margin: 0;
   overflow: hidden;
-  background: #030405;
+  background: #000;
   font-family: Arial, sans-serif;
   color: white;
-  touch-action: none;
 }
-
-canvas { display: block; }
 
 #hud {
   position: fixed;
-  top: 12px;
-  left: 18px;
+  top: 15px;
+  left: 15px;
   z-index: 5;
+  color: #ddd;
+  text-shadow: 0 0 8px #000;
   pointer-events: none;
-  text-shadow: 0 2px 8px black;
 }
 
-#hud h2 {
-  margin: 0;
-  color: #65aaff;
-  letter-spacing: 2px;
-  font-size: 20px;
+#brand {
+  color: #39aaff;
+  font-size: 21px;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+
+#subtitle {
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: #aaa;
 }
 
 #message {
-  margin-top: 6px;
-  font-size: 13px;
-}
-
-#instructions {
   position: fixed;
-  top: 15px;
-  right: 18px;
-  text-align: right;
-  font-size: 13px;
-  text-shadow: 0 2px 8px black;
+  top: 45%;
+  width: 100%;
+  text-align: center;
+  color: #eee;
+  font-size: 17px;
+  text-shadow: 0 0 12px black;
   pointer-events: none;
-}
-
-#crosshair {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  font-size: 24px;
-  pointer-events: none;
-  z-index: 4;
-}
-
-#controls {
-  position: fixed;
-  bottom: 18px;
-  left: 18px;
-  display: grid;
-  grid-template-columns: repeat(3, 55px);
-  gap: 5px;
-  z-index: 6;
-}
-
-button {
-  background: #07172bdc;
-  color: white;
-  border: 1px solid #168bff;
-  border-radius: 9px;
-  font-size: 20px;
-  touch-action: none;
-}
-
-#controls button {
-  width: 55px;
-  height: 55px;
-}
-
-#flash {
-  position: fixed;
-  bottom: 25px;
-  right: 18px;
-  z-index: 6;
-  padding: 14px;
-  font-size: 13px;
 }
 
 #start {
@@ -99,30 +56,70 @@ button {
   inset: 0;
   z-index: 10;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-  background: #020305eF;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(#171717, #000);
   text-align: center;
-  padding: 25px;
+  padding: 20px;
 }
 
 #start h1 {
-  color: #168bff;
-  letter-spacing: 4px;
-  text-shadow: 0 0 18px #087bff;
+  color: #38aaff;
+  letter-spacing: 5px;
 }
 
 #start button {
-  padding: 15px 28px;
-  margin-top: 20px;
-  font-size: 16px;
+  padding: 15px 35px;
+  background: #087bc5;
+  border: 0;
+  color: white;
+  font-size: 17px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-@media (max-width: 600px) {
-  #instructions { display: none; }
-  #hud h2 { font-size: 15px; }
-  #message { font-size: 11px; }
+#controls {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 6;
+  display: grid;
+  grid-template-columns: 55px 55px 55px;
+  gap: 5px;
+}
+
+#controls button, #flashButton {
+  width: 55px;
+  height: 55px;
+  border: 1px solid #777;
+  border-radius: 10px;
+  color: white;
+  background: #111b;
+  font-size: 20px;
+  touch-action: none;
+}
+
+#flashButton {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  z-index: 6;
+  width: 65px;
+  height: 65px;
+  font-size: 12px;
+}
+
+#crosshair {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ddd;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 </style>
 </head>
@@ -130,356 +127,385 @@ button {
 <body>
 
 <div id="hud">
-  <h2>AB GAMES — O ÚLTIMO SINAL</h2>
-  <div id="message">Explore a casa e descubra o que aconteceu...</div>
+  <div id="brand">AB GAMES</div>
+  <div id="subtitle">O ÚLTIMO SINAL</div>
 </div>
 
-<div id="instructions">
-  Mouse: olhar ao redor<br>
-  WASD: movimentar
-</div>
+<div id="message">Explore a casa...</div>
+<div id="crosshair"></div>
 
-<div id="crosshair">+</div>
+<div id="start">
+  <h1>O ÚLTIMO SINAL</h1>
+  <p>Uma casa abandonada guarda um segredo.</p>
+  <p>WASD para andar · Mouse para olhar</p>
+  <p>No celular, use os controles na tela.</p>
+  <button id="startButton">ENTRAR</button>
+</div>
 
 <div id="controls">
-  <span></span><button data-key="w">▲</button><span></span>
+  <div></div>
+  <button data-key="w">▲</button>
+  <div></div>
   <button data-key="a">◀</button>
   <button data-key="s">▼</button>
   <button data-key="d">▶</button>
 </div>
 
-<button id="flash">LANTERNA</button>
-
-<div id="start">
-  <h1>O ÚLTIMO SINAL</h1>
-  <p>Você entrou em uma casa abandonada.</p>
-  <p>Mas será que está sozinho?</p>
-  <button id="enter">ENTRAR NA CASA</button>
-</div>
+<button id="flashButton">LANTERNA</button>
 
 <script type="module">
 import * as THREE from
 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
 
+// CENA
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x030405);
 scene.fog = new THREE.FogExp2(0x030405, 0.035);
 
+// CÂMERA
 const camera = new THREE.PerspectiveCamera(
-  75, innerWidth / innerHeight, 0.1, 100
+  75, window.innerWidth / window.innerHeight, 0.1, 100
 );
 
-camera.position.set(0, 1.65, 8);
-scene.add(camera);
+camera.position.set(0, 1.7, 8);
+camera.rotation.order = "YXZ";
 
+// RENDERIZADOR
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(innerWidth, innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio, 1.7));
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.8;
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 
-scene.add(new THREE.HemisphereLight(0x687080, 0x17100a, 0.35));
+// ILUMINAÇÃO
+scene.add(new THREE.AmbientLight(0x62616a, 0.35));
 
+const moonLight = new THREE.PointLight(0x557799, 1.1, 30);
+moonLight.position.set(-7, 8, -5);
+scene.add(moonLight);
+
+// MATERIAIS
 function mat(color, roughness = 0.95) {
   return new THREE.MeshStandardMaterial({ color, roughness });
 }
 
-const wallMat = mat(0x393632);
-const floorMat = mat(0x30251d);
-const woodMat = mat(0x38251a);
-const darkMat = mat(0x151515);
+const wallMat = mat(0x292929);
+const floorMat = mat(0x34302b);
+const woodMat = mat(0x493326);
+const darkMat = mat(0x171717);
 
+// COLISÕES
 const colliders = [];
 
-function box(x,y,z,w,h,d,material,rotationY=0,solid=false) {
+function box(x, y, z, w, h, d, material, rotationY = 0, solid = false) {
   const obj = new THREE.Mesh(
-    new THREE.BoxGeometry(w,h,d), material
+    new THREE.BoxGeometry(w, h, d), material
   );
 
-  obj.position.set(x,y,z);
+  obj.position.set(x, y, z);
   obj.rotation.y = rotationY;
+  obj.castShadow = true;
+  obj.receiveShadow = true;
   scene.add(obj);
 
   if (solid) {
+    const c = Math.abs(Math.cos(rotationY));
+    const s = Math.abs(Math.sin(rotationY));
+
+    const halfW = (w * c + d * s) / 2;
+    const halfD = (w * s + d * c) / 2;
+
     colliders.push({
-      x,
-      z,
-      halfW: w/2 + 0.35,
-      halfD: d/2 + 0.35
+      x, z,
+      halfW: halfW + 0.32,
+      halfD: halfD + 0.32
     });
   }
 
   return obj;
 }
+
+// CASA
+box(0, -0.18, 0, 20, 0.35, 26, floorMat);
+box(0, 6.2, -13, 20, 12.4, 0.35, wallMat);
+box(-10, 6.2, 0, 0.35, 12.4, 26, wallMat);
+box(10, 6.2, 0, 0.35, 12.4, 26, wallMat);
+box(0, 12.3, 0, 20, 0.35, 26, darkMat);
+
+// ENTRADA
+box(-7, 3, 13, 6, 6, 0.35, wallMat);
+box(7, 3, 13, 6, 6, 0.35, wallMat);
+box(0, 5.5, 13, 8, 1, 0.35, wallMat);
+
+// JANELAS
+box(-9.78, 3.8, -2, 0.08, 2.5, 4, mat(0x070d15));
+box(-9.7, 3.8, -2, 0.12, 0.12, 4, mat(0x292929));
+box(-9.7, 3.8, -2, 0.12, 2.5, 0.12, mat(0x292929));
+
+box(9.78, 3.8, 2, 0.08, 2.5, 4, mat(0x070d15));
+box(9.7, 3.8, 2, 0.12, 0.12, 4, mat(0x292929));
+box(9.7, 3.8, 2, 0.12, 2.5, 0.12, mat(0x292929));
+
+// SOFÁ
+box(-6, 0.9, 2, 4.5, 1.2, 1.5, mat(0x33251e), 0.12, true);
+box(-6, 1.8, 2.5, 4.5, 1.1, 0.55, mat(0x241d19), 0.12, true);
+box(-8, 1.5, 1.4, 0.6, 1.3, 1.8, woodMat, 0.12, true);
+box(-4, 1.5, 1.4, 0.6, 1.3, 1.8, woodMat, 0.12, true);
+
+// MESA
+box(-1.5, 1.5, -2, 3.8, 0.18, 2.1, woodMat, 0.08, true);
+
+for (const x of [-3, -0.1]) {
+  for (const z of [-2.7, -1.3]) {
+    box(x, 0.7, z, 0.16, 1.5, 0.16, woodMat, 0, true);
+  }
 }
 
-// CASA MAIOR
-box(0,-0.18,0,20,0.35,26,floorMat);
-box(0,6.2,-13,20,12.4,0.35,wallMat);
-box(-10,6.2,0,0.35,12.4,26,wallMat);
-box(10,6.2,0,0.35,12.4,26,wallMat);
-box(0,12.3,0,20,0.35,26,mat(0x171717));
-
-// Parede frontal com abertura de entrada
-box(-7,3,13,6,6,0.35,wallMat);
-box(7,3,13,6,6,0.35,wallMat);
-box(0,5.5,13,8,1,0.35,wallMat);
-
-// Janelas
-box(-9.78,3.8,-2,0.08,2.5,4,mat(0x070d15));
-box(-9.7,3.8,-2,0.12,0.12,4,mat(0x292929));
-box(-9.7,3.8,-2,0.12,2.5,0.12,mat(0x292929));
-// Janela na parede direita
-box(9.78,3.8,2,0.08,2.5,4,mat(0x070d15));
-box(9.7,3.8,2,0.12,0.12,4,mat(0x292929));
-box(9.7,3.8,2,0.12,2.5,0.12,mat(0x292929));
-
-// Divisão da janela
-box(9.68,3.8,2,0.15,2.5,0.12,mat(0x292929));
-// MÓVEIS BAGUNÇADOS
-// Sofá
-box(-6,0.9,2,4.5,1.2,1.5,mat(0x33251e),0.12,true);
-box(-6,1.8,2.5,4.5,1.1,0.55,mat(0x241d19),0.12,true);
-box(-8,1.5,1.4,0.6,1.3,1.8,woodMat,0.12,true);
-box(-4,1.5,1.4,0.6,1.3,1.8,woodMat,0.12);
-
-// Mesa
-box(-1.5,1.5,-2,3.8,0.18,2.1,woodMat,0.08);
-for (const x of [-3,-0.1])
- for (const z of [-2.7,-1.3])
-  box(x,0.7,z,0.16,1.5,0.16,woodMat);
-
-// Cadeiras
- 
-  box(x,0.9,z,1,0.18,1,woodMat,angle);
-  box(x,1.7,z-0.42,1,1.5,0.16,woodMat,angle);
-  box(x-0.4,0.35,z-0.4,0.14,0.9,0.14,woodMat,angle);
-  box(x+0.4,0.35,z-0.4,0.14,0.9,0.14,woodMat,angle);
-  box(x-0.4,0.35,z+0.4,0.14,0.9,0.14,woodMat,angle);
-  box(x+0.4,0.35,z+0.4,0.14,0.9,0.14,woodMat,angle);
+// CADEIRAS
+function chair(x, z, angle) {
+  box(x, 0.9, z, 1, 0.18, 1, woodMat, angle, true);
+  box(x, 1.7, z - 0.42, 1, 1.5, 0.16, woodMat, angle, true);
+  box(x - 0.4, 0.35, z - 0.4, 0.14, 0.9, 0.14, woodMat, angle, true);
+  box(x + 0.4, 0.35, z - 0.4, 0.14, 0.9, 0.14, woodMat, angle, true);
+  box(x - 0.4, 0.35, z + 0.4, 0.14, 0.9, 0.14, woodMat, angle, true);
+  box(x + 0.4, 0.35, z + 0.4, 0.14, 0.9, 0.14, woodMat, angle, true);
 }
-chair(2,-2,0.7);
-chair(-2,-4,1.5);
 
-// Armário tombado
-box(7,1.2,-5,2.2,2.5,1.2,woodMat,0.8);
-box(7,2.45,-5,2.2,0.15,1.2,darkMat,0.8);
+chair(2, -2, 0.7);
+chair(-2, -4, 1.5);
 
-// Caixas e objetos espalhados
-box(-7,0.5,-7,1.3,1,1.2,woodMat,0.3);
-box(4,0.4,3,1.2,0.8,1,woodMat,0.9);
-box(5,0.3,-7,1.4,0.6,1.1,woodMat,0.4);
+// ARMÁRIO TOMABADO
+box(7, 1.2, -5, 2.2, 2.5, 1.2, woodMat, 0.8, true);
+box(7, 2.45, -5, 2.2, 0.15, 1.2, darkMat, 0.8, true);
 
-// Papéis no chão
+// CAIXAS
+box(-7, 0.5, -7, 1.3, 1, 1.2, woodMat, 0.3, true);
+box(4, 0.4, 3, 1.2, 0.8, 1, woodMat, 0.9, true);
+box(5, 0.3, -7, 1.4, 0.6, 1.1, woodMat, 0.4, true);
+
+// PAPÉIS
 const paperMat = mat(0xaaa18c);
-for (let i=0;i<28;i++) {
-  const p = box(
-    -8 + Math.random()*16,
+
+for (let i = 0; i < 28; i++) {
+  box(
+    -8 + Math.random() * 16,
     0.015,
-    -10 + Math.random()*20,
-    0.35 + Math.random()*0.5,
+    -10 + Math.random() * 20,
+    0.35 + Math.random() * 0.5,
     0.025,
-    0.3 + Math.random()*0.35,
+    0.3 + Math.random() * 0.35,
     paperMat,
-    Math.random()*3
+    Math.random() * 3
   );
 }
 
 // ESCADA PARA O PORÃO
-box(7,-0.1,-3,4,0.25,7,darkMat);
+const stairMat = mat(0x29231f);
 
-for (let i=0;i<13;i++) {
-  box(
-    7,
-    -0.12-i*0.27,
-    -1.2-i*0.48,
-    3.2,
-    0.22,
-    0.55,
-    mat(0x39322c)
-  );
+// Entrada escura do porão
+box(7, -1.8, -11.8, 5, 4, 0.3, darkMat);
+box(7, -3.7, -8.5, 5, 0.3, 9, darkMat);
+
+// Degraus descendo
+for (let i = 0; i < 9; i++) {
+  const z = -5.3 - i * 0.65;
+  const y = -0.12 - i * 0.38;
+
+  box(7, y, z, 3.8, 0.22, 0.8, stairMat);
 }
 
-box(5.25,-0.1,-4,0.18,2.8,7,woodMat);
-box(8.75,-0.1,-4,0.18,2.8,7,woodMat);
+// PAREDES DO PORÃO
+box(5, -2.2, -8.5, 0.25, 4, 9, wallMat);
+box(9, -2.2, -8.5, 0.25, 4, 9, wallMat);
 
-// Parede do fundo do porão
-box(7,-3.8,-8,4,5,0.25,wallMat);
+// AVISO NA PAREDE
+function warningTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1024;
+  canvas.height = 256;
 
-// ESCRITA VERMELHA ESCORRENDO
-const signCanvas = document.createElement('canvas');
-signCanvas.width = 1200;
-signCanvas.height = 360;
-const ctx = signCanvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#170909";
+  ctx.fillRect(0, 0, 1024, 256);
 
-ctx.clearRect(0,0,1200,360);
-ctx.font = 'bold 76px Arial';
-ctx.textAlign = 'center';
-ctx.fillStyle = '#650909';
-ctx.shadowColor = '#260000';
-ctx.shadowBlur = 10;
-ctx.fillText('QUEM ENTRA TEM QUE',600,125);
-ctx.fillText('TER SORTE PRA SAIR',600,225);
-ctx.shadowBlur = 0;
+  ctx.font = "bold 64px Arial";
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#a00000";
+  ctx.shadowColor = "#ff0000";
+  ctx.shadowBlur = 15;
+  ctx.fillText("QUEM ENTRA TEM QUE", 512, 95);
+  ctx.fillText("TER SORTE PRA SAIR", 512, 175);
 
-// Pingos decorativos de tinta vermelha
-ctx.strokeStyle = '#640606';
-ctx.fillStyle = '#640606';
-
-for(let i=0;i<48;i++) {
-  const x = 80 + Math.random()*1040;
-  const y = 130 + Math.random()*100;
-  const length = 15 + Math.random()*100;
-  ctx.lineWidth = 2 + Math.random()*7;
-  ctx.beginPath();
-  ctx.moveTo(x,y);
-  ctx.lineTo(x,y+length);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(x,y+length,ctx.lineWidth/2,0,Math.PI*2);
-  ctx.fill();
+  return new THREE.CanvasTexture(canvas);
 }
 
-const signTexture = new THREE.CanvasTexture(signCanvas);
-const sign = new THREE.Mesh(
-  new THREE.PlaneGeometry(7,2.1),
+const warning = new THREE.Mesh(
+  new THREE.PlaneGeometry(7, 1.8),
   new THREE.MeshBasicMaterial({
-    map: signTexture,
-    transparent: true,
-    side: THREE.DoubleSide
+    map: warningTexture(),
+    transparent: true
   })
 );
-sign.position.set(0,3.7,-12.78);
-scene.add(sign);
+
+warning.position.set(0, 3.5, -12.78);
+scene.add(warning);
 
 // LANTERNA
 const flashlight = new THREE.SpotLight(
-  0xffe7bd, 90, 24, Math.PI/7, 0.45, 1.4
+  0xe6edff, 65, 24, Math.PI / 7, 0.35, 1
 );
+
 camera.add(flashlight);
-flashlight.position.set(0,0,0);
-flashlight.target.position.set(0,0,-1);
+flashlight.position.set(0, 0, 0);
+flashlight.target.position.set(0, 0, -1);
 camera.add(flashlight.target);
+scene.add(camera);
 
-// Movimento e câmera
-const keys = {};
-let yaw = 0;
-let pitch = 0;
-let locked = false;
 let flashlightOn = true;
-let started = false;
 
-document.addEventListener('keydown',e=>{
+document.getElementById("flashButton").onclick = () => {
+  flashlightOn = !flashlightOn;
+  flashlight.visible = flashlightOn;
+};
+
+// MOVIMENTAÇÃO
+const keys = {};
+
+window.addEventListener("keydown", e => {
   keys[e.key.toLowerCase()] = true;
 });
-document.addEventListener('keyup',e=>{
+
+window.addEventListener("keyup", e => {
   keys[e.key.toLowerCase()] = false;
 });
 
-document.querySelectorAll('[data-key]').forEach(btn=>{
-  const key = btn.dataset.key;
-  btn.addEventListener('pointerdown',e=>{
+// BOTÕES DO CELULAR
+document.querySelectorAll("[data-key]").forEach(button => {
+  const key = button.dataset.key;
+
+  button.addEventListener("pointerdown", e => {
     e.preventDefault();
     keys[key] = true;
   });
-  ['pointerup','pointerleave','pointercancel'].forEach(ev=>{
-    btn.addEventListener(ev,()=>keys[key]=false);
-  });
+
+  button.addEventListener("pointerup", () => keys[key] = false);
+  button.addEventListener("pointerleave", () => keys[key] = false);
+  button.addEventListener("pointercancel", () => keys[key] = false);
 });
 
-// Mouse: clique para capturar o cursor
-renderer.domElement.addEventListener('click',()=>{
-  if(started && matchMedia('(pointer:fine)').matches) {
+// OLHAR COM MOUSE
+let yaw = 0;
+let pitch = 0;
+let dragging = false;
+let lastX = 0;
+let lastY = 0;
+
+renderer.domElement.addEventListener("click", () => {
+  if (!isMobile()) {
     renderer.domElement.requestPointerLock?.();
   }
 });
 
-document.addEventListener('pointerlockchange',()=>{
-  locked = document.pointerLockElement === renderer.domElement;
+document.addEventListener("mousemove", e => {
+  if (document.pointerLockElement === renderer.domElement) {
+    yaw -= e.movementX * 0.002;
+    pitch -= e.movementY * 0.002;
+    pitch = THREE.MathUtils.clamp(pitch, -1.35, 1.35);
+  }
 });
 
-document.addEventListener('mousemove',e=>{
-  if(!locked) return;
-  yaw -= e.movementX * 0.002;
-  pitch -= e.movementY * 0.002;
-  pitch = THREE.MathUtils.clamp(pitch,-1.35,1.35);
-});
+// OLHAR COM TOQUE
+function isMobile() {
+  return window.matchMedia("(pointer: coarse)").matches;
+}
 
-// Celular: arrastar o dedo para olhar
-let touching = false;
-let lastX = 0;
-let lastY = 0;
-
-renderer.domElement.addEventListener('pointerdown',e=>{
-  if(e.pointerType === 'touch') {
-    touching = true;
+renderer.domElement.addEventListener("pointerdown", e => {
+  if (e.pointerType === "touch") {
+    dragging = true;
     lastX = e.clientX;
     lastY = e.clientY;
   }
 });
 
-window.addEventListener('pointerup',()=>touching=false);
-window.addEventListener('pointercancel',()=>touching=false);
+renderer.domElement.addEventListener("pointermove", e => {
+  if (dragging && e.pointerType === "touch") {
+    yaw -= (e.clientX - lastX) * 0.006;
+    pitch -= (e.clientY - lastY) * 0.006;
+    pitch = THREE.MathUtils.clamp(pitch, -1.35, 1.35);
 
-window.addEventListener('pointermove',e=>{
-  if(!touching || e.pointerType !== 'touch') return;
-  yaw -= (e.clientX-lastX)*0.004;
-  pitch -= (e.clientY-lastY)*0.004;
-  pitch = THREE.MathUtils.clamp(pitch,-1.35,1.35);
-  lastX=e.clientX;
-  lastY=e.clientY;
+    lastX = e.clientX;
+    lastY = e.clientY;
+  }
 });
 
-// Lanterna
-document.getElementById('flash').onclick=()=>{
-  flashlightOn = !flashlightOn;
-  flashlight.visible = flashlightOn;
-};
+renderer.domElement.addEventListener("pointerup", () => dragging = false);
+renderer.domElement.addEventListener("pointercancel", () => dragging = false);
 
-// Iniciar
-document.getElementById('enter').onclick=()=>{
+// COLISÃO
+function blocked(x, z) {
+  const radius = 0.32;
+
+  return colliders.some(c =>
+    Math.abs(x - c.x) < c.halfW + radius &&
+    Math.abs(z - c.z) < c.halfD + radius
+  );
+}
+
+// INICIAR
+let started = false;
+
+document.getElementById("startButton").onclick = () => {
   started = true;
-  document.getElementById('start').style.display='none';
-  if(matchMedia('(pointer:fine)').matches) {
-    renderer.domElement.requestPointerLock?.();
-  }
+  document.getElementById("start").style.display = "none";
 };
 
-// Loop
+// ANIMAÇÃO
 function animate() {
   requestAnimationFrame(animate);
 
-  if(started) {
+  camera.rotation.y = yaw;
+  camera.rotation.x = pitch;
+
+  if (started) {
     const speed = 0.075;
-    const dir = new THREE.Vector3();
+    const direction = new THREE.Vector3();
 
-    if(keys.w || keys.arrowup) dir.z -= 1;
-    if(keys.s || keys.arrowdown) dir.z += 1;
-    if(keys.a || keys.arrowleft) dir.x -= 1;
-    if(keys.d || keys.arrowright) dir.x += 1;
+    if (keys.w || keys.arrowup) direction.z -= 1;
+    if (keys.s || keys.arrowdown) direction.z += 1;
+    if (keys.a || keys.arrowleft) direction.x -= 1;
+    if (keys.d || keys.arrowright) direction.x += 1;
 
-    dir.normalize();
-    dir.applyAxisAngle(new THREE.Vector3(0,1,0),yaw);
+    if (direction.length() > 0) {
+      direction.normalize();
+      direction.applyAxisAngle(
+        new THREE.Vector3(0, 1, 0), yaw
+      );
 
-    camera.position.x += dir.x*speed;
-    camera.position.z += dir.z*speed;
+      const nextX = THREE.MathUtils.clamp(
+        camera.position.x + direction.x * speed, -9.3, 9.3
+      );
 
-    camera.position.x = THREE.MathUtils.clamp(camera.position.x,-9,9);
-    camera.position.z = THREE.MathUtils.clamp(camera.position.z,-12,12);
+      const nextZ = THREE.MathUtils.clamp(
+        camera.position.z + direction.z * speed, -12.2, 12.2
+      );
 
-    camera.rotation.order='YXZ';
-    camera.rotation.set(pitch,yaw,0);
+      if (!blocked(nextX, camera.position.z)) {
+        camera.position.x = nextX;
+      }
+
+      if (!blocked(camera.position.x, nextZ)) {
+        camera.position.z = nextZ;
+      }
+    }
   }
 
-  renderer.render(scene,camera);
+  renderer.render(scene, camera);
 }
 
-window.addEventListener('resize',()=>{
-  camera.aspect=innerWidth/innerHeight;
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth,innerHeight);
+  renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
 animate();
