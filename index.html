@@ -1,343 +1,173 @@
-```html
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AB GAMES — O Último Sinal</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+<title>AB GAMES - O ÚLTIMO SINAL</title>
 
 <style>
 * {
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-  background: black;
+    background: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
 #start {
-  position: fixed;
-  inset: 0;
-  background:
-    linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.65)),
-    url("video%20da%20tela%20inicial%20AB%20GAMES.gif")
-    center / cover no-repeat;
+    width: 100%;
+    height: 100vh;
+    background:
+        linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.75)),
+        url("video da tela inicial AB GAMES.gif") center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
-#brand {
-  position: absolute;
-  top: 25px;
-  left: 25px;
-  color: #35aaff;
-  font-size: 22px;
-  font-weight: bold;
-  letter-spacing: 4px;
+.logo {
+    color: #00aaff;
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    margin-bottom: 35px;
+    text-shadow: 0 0 15px #008cff;
 }
 
 h1 {
-  position: absolute;
-  top: 50%;
-  right: 30px;
-  margin: 0;
-  color: #e00000;
-  font-family: 'Creepster', Georgia, serif;
-  font-size: clamp(80px, 11vw, 145px);
-  font-weight: normal;
-  line-height: .85;
-  text-align: right;
-  transform: translateY(-50%) rotate(-8deg);
-  text-shadow: 0 0 18px #8b0000, 2px 3px 18px black;
+    font-size: clamp(35px, 7vw, 65px);
+    letter-spacing: 5px;
+    text-shadow: 0 0 20px black;
+    margin-bottom: 35px;
 }
 
 .menu-button {
-  position: absolute;
-  left: 7%;
-  background: transparent;
-  border: none;
-  padding: 0;
-  color: #e00000;
-  font-family: 'Creepster', Georgia, serif;
-  font-size: 48px;
-  letter-spacing: 3px;
-  cursor: pointer;
-  text-shadow: 0 0 12px #8b0000, 2px 3px 12px black;
+    width: 220px;
+    padding: 15px;
+    margin: 8px;
+    background: rgba(0, 0, 0, .75);
+    border: 2px solid #008cff;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
 }
 
 .menu-button:hover {
-  color: #ff3333;
+    background: #008cff;
+    box-shadow: 0 0 20px #008cff;
 }
 
-#jogar { top: 43%; }
-#creditos { top: 53%; }
-
-#sound-button {
-  position: absolute;
-  right: 25px;
-  bottom: 25px;
-  background: rgba(0,0,0,.5);
-  border: 1px solid #777;
-  border-radius: 5px;
-  padding: 10px 15px;
-  color: white;
-  cursor: pointer;
+#creditos {
+    display: none;
+    background: rgba(0,0,0,.95);
+    padding: 30px;
+    border: 1px solid #008cff;
+    max-width: 90%;
 }
 
-#credits-screen {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  background: linear-gradient(#111, #000);
-  color: white;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
+#creditos p {
+    margin: 12px;
 }
 
-#credits-screen h2 {
-  color: #e00000;
-  font-family: 'Creepster', Georgia, serif;
-  font-size: 70px;
-}
-
-.credit-line {
-  font-size: 20px;
-  margin: 13px;
-}
-
-.credit-line strong {
-  color: #35aaff;
-}
-
-#back-button {
-  position: static;
-  margin-top: 30px;
-}
-
-#intro-screen {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  background: black;
-  align-items: center;
-  justify-content: center;
-}
-
-#intro-video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-#video-error {
-  display: none;
-  position: absolute;
-  color: white;
-  text-align: center;
-  padding: 20px;
-}
-
-#video-error button {
-  padding: 12px 20px;
-  margin-top: 15px;
-  background: #8b0000;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-#footer {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  text-align: center;
-  color: #aaa;
-  font-size: 11px;
-  letter-spacing: 3px;
-}
-
-@media (max-width: 600px) {
-  #brand {
-    top: 18px;
-    left: 15px;
-    font-size: 16px;
-  }
-
-  h1 {
-    right: 15px;
-    font-size: 78px;
-  }
-
-  .menu-button {
-    font-size: 38px;
-  }
-
-  #credits-screen h2 {
-    font-size: 55px;
-  }
-
-  .credit-line {
-    font-size: 16px;
-  }
+#som {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background: rgba(0,0,0,.7);
+    border: 1px solid #008cff;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<audio id="menu-audio" loop preload="auto">
-  <source src="efeito%20sonoro%20tela%20inicial%20do%20jogo%20ULTIMO%20SINAL%20-%20AB%20GAMES.mp3" type="audio/mpeg">
-</audio>
-
 <div id="start">
 
-  <div id="brand">AB GAMES</div>
+    <button id="som" onclick="alternarSom()">🔊 SOM</button>
 
-  <h1>O ÚLTIMO<br>SINAL</h1>
+    <div class="logo">AB GAMES</div>
 
-  <button type="button" class="menu-button" id="jogar"
-    onclick="iniciarJogo()">
-    JOGAR
-  </button>
+    <h1>O ÚLTIMO SINAL</h1>
 
-  <button type="button" class="menu-button" id="creditos"
-    onclick="abrirCreditos()">
-    CRÉDITOS
-  </button>
-
-  <button type="button" id="sound-button"
-    onclick="alternarSom()">
-    🔊 ATIVAR SOM
-  </button>
-
-  <div id="footer">
-    UMA EXPERIÊNCIA DE TERROR E SUSPENSE
-  </div>
-
-</div>
-
-<div id="credits-screen">
-
-  <h2>CRÉDITOS</h2>
-
-  <p class="credit-line">
-    RESPONSÁVEL: <strong>Victor Hugo Cesário Velloso</strong>
-  </p>
-
-  <p class="credit-line">
-    DESENVOLVEDOR: <strong>Hebert Renan Velloso</strong>
-  </p>
-
-  <p class="credit-line">
-    <strong>AB GAMES</strong>
-  </p>
-
-  <button type="button" class="menu-button"
-    id="back-button" onclick="voltarMenu()">
-    VOLTAR
-  </button>
-
-</div>
-
-<div id="intro-screen">
-
-  <video id="intro-video" playsinline preload="auto">
-    <source
-      src="https://raw.githubusercontent.com/abgamesbr/O-ULTIMO-SINAL./main/curtoVideoOficalAB.GAMES.mp4"
-      type="video/mp4">
-  </video>
-
-  <div id="video-error">
-    Não foi possível reproduzir a introdução.
-    <br>
-    <button type="button" onclick="entrarNoJogo()">
-      CONTINUAR PARA O JOGO
+    <button class="menu-button" onclick="iniciarJogo()">
+        JOGAR
     </button>
-  </div>
+
+    <button class="menu-button" onclick="abrirCreditos()">
+        CRÉDITOS
+    </button>
+
+    <div id="creditos">
+        <h2>CRÉDITOS</h2>
+        <p>Responsável: Victor Hugo Cesário Velloso</p>
+        <p>Desenvolvedor: Hebert Renan Velloso</p>
+        <p>AB GAMES</p>
+
+        <button class="menu-button" onclick="voltarMenu()">
+            VOLTAR
+        </button>
+    </div>
 
 </div>
+
+<audio id="audioMenu" loop>
+    <source src="efeito sonoro tela inicial do jogo ULTIMO SINAL - AB GAMES.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-function alternarSom() {
-  var audio = document.getElementById("menu-audio");
-  var button = document.getElementById("sound-button");
-
-  if (audio.paused) {
-    audio.play().then(function() {
-      button.textContent = "🔇 DESLIGAR SOM";
-    }).catch(function() {
-      button.textContent = "SOM INDISPONÍVEL";
-    });
-  } else {
-    audio.pause();
-    button.textContent = "🔊 ATIVAR SOM";
-  }
-}
-
 function iniciarJogo() {
-  var audio = document.getElementById("menu-audio");
-  var menu = document.getElementById("start");
-  var credits = document.getElementById("credits-screen");
-  var intro = document.getElementById("intro-screen");
-  var video = document.getElementById("intro-video");
-  var error = document.getElementById("video-error");
-
-  audio.pause();
-
-  menu.style.display = "none";
-  credits.style.display = "none";
-  intro.style.display = "flex";
-  error.style.display = "none";
-
-  video.currentTime = 0;
-
-  video.play().catch(function() {
-    error.style.display = "block";
-  });
-}
-
-function abrirCreditos() {
-  document.getElementById("start").style.display = "none";
-  document.getElementById("credits-screen").style.display = "flex";
-
-  document.getElementById("menu-audio").pause();
-  document.getElementById("sound-button").textContent = "🔊 ATIVAR SOM";
-}
-
-function voltarMenu() {
-  document.getElementById("credits-screen").style.display = "none";
-  document.getElementById("start").style.display = "block";
-}
-
-function entrarNoJogo() {
-  document.getElementById("intro-video").pause();
-
-  window.location.href =
+    window.location.href =
     "https://abgamesbr.github.io/AB-O-ULTIMO-SINAL-JOGO/";
 }
 
-document.getElementById("intro-video").addEventListener(
-  "ended",
-  entrarNoJogo
-);
+function abrirCreditos() {
+    document.querySelector("h1").style.display = "none";
+    document.querySelector(".logo").style.display = "none";
 
-document.getElementById("intro-video").addEventListener(
-  "error",
-  function() {
-    document.getElementById("video-error").style.display = "block";
-  }
-);
+    document.querySelectorAll(".menu-button").forEach(botao => {
+        botao.style.display = "none";
+    });
+
+    document.getElementById("creditos").style.display = "block";
+}
+
+function voltarMenu() {
+    document.getElementById("creditos").style.display = "none";
+
+    document.querySelector("h1").style.display = "block";
+    document.querySelector(".logo").style.display = "block";
+
+    document.querySelectorAll(".menu-button").forEach(botao => {
+        botao.style.display = "block";
+    });
+}
+
+function alternarSom() {
+    const audio = document.getElementById("audioMenu");
+    const botao = document.getElementById("som");
+
+    if (audio.paused) {
+        audio.play();
+        botao.innerText = "🔊 SOM";
+    } else {
+        audio.pause();
+        botao.innerText = "🔇 SOM";
+    }
+}
 </script>
 
 </body>
 </html>
-```
