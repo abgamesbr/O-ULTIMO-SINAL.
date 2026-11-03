@@ -226,11 +226,11 @@ function box(x, y, z, w, h, d, material, rotationY = 0, solid = false) {
 }
 
 // CASA
-box(0, -0.18, 0, 20, 0.35, 26, floorMat);
-box(0, 6.2, -13, 20, 12.4, 0.35, wallMat);
-box(-10, 6.2, 0, 0.35, 12.4, 26, wallMat);
-box(10, 6.2, 0, 0.35, 12.4, 26, wallMat);
-box(0, 12.3, 0, 20, 0.35, 26, darkMat);
+// CHÃO COM ABERTURA PARA A ESCADA
+box(-2.75, -0.18, 0, 14.5, 0.35, 26, floorMat);
+box(9.75, -0.18, 0, 0.5, 0.35, 26, floorMat);
+box(7, -0.18, 4.25, 5, 0.35, 17.5, floorMat);
+box(7, -0.18, -12.75, 5, 0.35, 0.5, floorMat);
 
 // ENTRADA
 box(-7, 3, 13, 6, 6, 0.35, wallMat);
