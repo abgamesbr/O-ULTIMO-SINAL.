@@ -7,725 +7,85 @@
 <title>AB GAMES — O Último Sinal</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
-  overflow: hidden;
-  background: #000;
-  font-family: Arial, sans-serif;
-}
-
-#hud {
-  position: fixed;
-  top: 16px;
-  left: 18px;
-  z-index: 5;
-  pointer-events: none;
-  text-shadow: 0 2px 8px black;
-}
-
-#brand {
-  color: #35aaff;
-  font-size: 23px;
-  font-weight: bold;
-  letter-spacing: 4px;
-}
-
-#subtitle {
-  color: #aaa;
-  font-size: 10px;
-  letter-spacing: 4px;
-}
-
-#message {
-  position: fixed;
-  top: 15%;
   width: 100%;
-  text-align: center;
-  color: #ddd;
-  font-size: 13px;
-  letter-spacing: 2px;
-  text-shadow: 0 2px 10px black;
-  pointer-events: none;
-}
-
-#crosshair {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #ddd;
-  transform: translate(-50%,-50%);
-  pointer-events: none;
+  height: 100vh;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background: #000;
 }
 
 #start {
   position: fixed;
   inset: 0;
-  z-index: 20;
   background:
-    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.65)),
+    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)),
     url("video%20da%20tela%20inicial%20AB%20GAMES.gif")
     center center / cover no-repeat;
-  color: white;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 20px;
+  color: white;
 }
 
-#start h1 {
+#brand {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  color: #35aaff;
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  text-shadow: 0 2px 10px black;
+}
+
+h1 {
   color: #36aaff;
+  font-size: clamp(30px, 6vw, 55px);
   letter-spacing: 5px;
-  font-size: 30px;
-  text-shadow: 0 3px 15px #000;
+  text-shadow: 0 3px 18px black;
+  margin-bottom: 10px;
 }
 
-#start p {
-  color: #ddd;
-  font-size: 13px;
-  text-shadow: 0 2px 8px #000;
+p {
+  color: #eee;
+  font-size: 15px;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 10px black;
 }
 
-#start button {
-  padding: 15px 38px;
-  background: #087bc5;
-  border: 1px solid #48baff;
-  border-radius: 6px;
-  color: white;
-  font-size: 16px;
-  margin-top: 15px;
-  cursor: pointer;
-}
-
-#start button:hover {
-  background: #159be9;
-}
-
-#controls {
-  position: fixed;
-  bottom: 17px;
-  left: 17px;
-  z-index: 6;
-  display: grid;
-  grid-template-columns: 53px 53px 53px;
-  gap: 5px;
-}
-
-#controls button, #lamp {
-  height: 53px;
-  border: 1px solid #66717b;
-  border-radius: 9px;
-  color: white;
-  background: #101820bb;
-  font-size: 20px;
-  touch-action: none;
-}
-
-#lamp {
-  position: fixed;
-  right: 18px;
-  bottom: 25px;
-  z-index: 6;
-  width: 68px;
+#footer {
+  position: absolute;
+  bottom: 20px;
+  color: #aaa;
   font-size: 11px;
+  letter-spacing: 3px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="hud">
-  <div id="brand">AB GAMES</div>
-  <div id="subtitle">O ÚLTIMO SINAL</div>
-</div>
-
-<div id="message">Há algo nesta casa...</div>
-<div id="crosshair"></div>
-
 <div id="start">
+
+  <div id="brand">AB GAMES</div>
+
   <h1>O ÚLTIMO SINAL</h1>
+
   <p>Algumas portas deveriam permanecer fechadas.</p>
-  <p>WASD para andar · Mouse para olhar</p>
-  <p>No celular, use os controles e arraste a tela.</p>
-  <button id="enter">ENTRAR</button>
+
+  <div id="footer">UMA EXPERIÊNCIA DE TERROR E SUSPENSE</div>
+
 </div>
 
-<div id="controls">
-  <div></div><button data-key="w">▲</button><div></div>
-  <button data-key="a">◀</button>
-  <button data-key="s">▼</button>
-  <button data-key="d">▶</button>
-</div>
-
-<button id="lamp">LANTERNA</button>
-
-<script type="module">
-import * as THREE from
-'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
-
-// =================================
-// CONFIGURAÇÃO
-// =================================
-
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x08090b);
-scene.fog = new THREE.FogExp2(0x08090b, 0.025);
-
-const camera = new THREE.PerspectiveCamera(
-  74,
-  innerWidth / innerHeight,
-  0.1,
-  65
-);
-
-camera.position.set(0, 1.7, 3.8);
-camera.rotation.order = "YXZ";
-
-const renderer = new THREE.WebGLRenderer({
-  antialias: true,
-  powerPreference: "high-performance"
-});
-
-renderer.setSize(innerWidth, innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.85;
-
-document.body.appendChild(renderer.domElement);
-
-// =================================
-// TEXTURAS PROCEDURAIS
-// =================================
-
-function noiseTexture(base, amount, lines = false) {
-  const canvas = document.createElement("canvas");
-  canvas.width = 512;
-  canvas.height = 512;
-
-  const ctx = canvas.getContext("2d");
-  ctx.fillStyle = base;
-  ctx.fillRect(0,0,512,512);
-
-  for(let i=0;i<14000;i++) {
-    const v = Math.floor(Math.random()*amount);
-    ctx.fillStyle = `rgba(${v},${v},${v},0.20)`;
-    ctx.fillRect(
-      Math.random()*512,
-      Math.random()*512,
-      2+Math.random()*3,
-      2+Math.random()*3
-    );
-  }
-
-  if(lines) {
-    for(let y=0;y<512;y+=128) {
-      ctx.strokeStyle="rgba(0,0,0,0.35)";
-      ctx.lineWidth=4;
-      ctx.beginPath();
-      ctx.moveTo(0,y);
-      ctx.lineTo(512,y);
-      ctx.stroke();
-    }
-  }
-
-  const tex = new THREE.CanvasTexture(canvas);
-  tex.wrapS = THREE.RepeatWrapping;
-  tex.wrapT = THREE.RepeatWrapping;
-  tex.colorSpace = THREE.SRGBColorSpace;
-  return tex;
-}
-
-const concreteTexture = noiseTexture("#393632",90);
-concreteTexture.repeat.set(3,2);
-
-const woodTexture = noiseTexture("#332820",80,true);
-woodTexture.repeat.set(5,5);
-
-const concrete = new THREE.MeshStandardMaterial({
-  map: concreteTexture,
-  roughness: 1
-});
-
-const floorMaterial = new THREE.MeshStandardMaterial({
-  map: woodTexture,
-  roughness: 0.95
-});
-
-const darkWood = new THREE.MeshStandardMaterial({
-  color: 0x30241d,
-  roughness: 1
-});
-
-const blackMetal = new THREE.MeshStandardMaterial({
-  color: 0x17191c,
-  metalness: 0.25,
-  roughness: 0.85
-});
-
-// =================================
-// ILUMINAÇÃO
-// =================================
-
-scene.add(
-  new THREE.HemisphereLight(0x78849a,0x17120e,0.20)
-);
-
-const weakRoomLight = new THREE.PointLight(
-  0x65748c, 0.7, 13
-);
-
-weakRoomLight.position.set(-3,4,1);
-scene.add(weakRoomLight);
-
-// Lanterna presa à câmera
-const flashlight = new THREE.SpotLight(
-  0xdde8ff,
-  35,
-  11,
-  Math.PI/8,
-  0.55,
-  1.5
-);
-
-flashlight.position.set(0,0,0);
-flashlight.target.position.set(0,0,-1);
-
-camera.add(flashlight);
-camera.add(flashlight.target);
-scene.add(camera);
-
-let lampOn = true;
-
-document.getElementById("lamp").onclick = () => {
-  lampOn = !lampOn;
-  flashlight.visible = lampOn;
-};
-
-// =================================
-// CONSTRUÇÃO DOS OBJETOS
-// =================================
-
-const colliders = [];
-
-function box(x,y,z,w,h,d,material,solid=false) {
-  const obj = new THREE.Mesh(
-    new THREE.BoxGeometry(w,h,d),
-    material
-  );
-
-  obj.position.set(x,y,z);
-  obj.castShadow = true;
-  obj.receiveShadow = true;
-  scene.add(obj);
-
-  if(solid) {
-    colliders.push({
-      x,z,
-      halfW:w/2,
-      halfD:d/2
-    });
-  }
-
-  return obj;
-}
-
-// =================================
-// CÔMODO COM ABERTURA NO CHÃO
-// =================================
-
-// Chão dividido em partes.
-// O espaço central ao fundo será a entrada da escada.
-
-box(-4,-0.2,0,4,0.4,12,floorMaterial);
-box(4,-0.2,0,4,0.4,12,floorMaterial);
-
-box(0,-0.2,4.5,4,0.4,3,floorMaterial);
-box(0,-0.2,-5.4,4,0.4,1.2,floorMaterial);
-
-// Paredes laterais e frontal
-box(-6,2.5,0,0.3,5,12,concrete);
-box(6,2.5,0,0.3,5,12,concrete);
-box(0,2.5,6,12,5,0.3,concrete);
-
-// Parede do fundo dividida para deixar passagem central
-box(-4,2.5,-6,4,5,0.3,concrete);
-box(4,2.5,-6,4,5,0.3,concrete);
-box(0,4.85,-6,4,0.3,0.3,concrete);
-
-// Teto
-box(0,5.1,0,12,0.3,12,concrete);
-
-// =================================
-// ESCRITA NA PAREDE
-// =================================
-
-function makeWriting() {
-  const canvas = document.createElement("canvas");
-  canvas.width = 1024;
-  canvas.height = 320;
-
-  const ctx = canvas.getContext("2d");
-
-  ctx.fillStyle="#191312";
-  ctx.fillRect(0,0,1024,320);
-
-  ctx.textAlign="center";
-  ctx.font="bold 67px Arial";
-  ctx.fillStyle="#a00000";
-  ctx.shadowColor="#d00000";
-  ctx.shadowBlur=16;
-
-  ctx.fillText("NÃO OLHE PARA TRÁS.",512,110);
-  ctx.fillText("ELE JÁ ESTÁ AQUI.",512,210);
-
-  // Tinta vermelha escorrida, efeito cenográfico
-  ctx.shadowBlur=0;
-
-  for(let i=0;i<38;i++) {
-    const x=70+Math.random()*884;
-    const y=210+Math.random()*25;
-    const length=8+Math.random()*48;
-
-    ctx.fillStyle="#710707";
-    ctx.fillRect(x,y,3,length);
-  }
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  return texture;
-}
-
-const sign = new THREE.Mesh(
-  new THREE.PlaneGeometry(9,2.6),
-  new THREE.MeshBasicMaterial({
-    map:makeWriting()
-  })
-);
-
-sign.position.set(0,3.4,-5.78);
-scene.add(sign);
-
-// =================================
-// ESCADA DESCENDO
-// =================================
-
-const stairMaterial = new THREE.MeshStandardMaterial({
-  color:0x29231e,
-  roughness:1
-});
-
-// Degraus descendo para o subterrâneo
-for(let i=0;i<14;i++) {
-  const z=-3.0-i*0.52;
-  const y=-0.12-i*0.22;
-
-  box(0,y,z,3.4,0.22,0.65,stairMaterial);
-}
-
-// Laterais da escada
-box(-1.85,-1.8,-6.5,0.25,3.7,8.5,concrete);
-box(1.85,-1.8,-6.5,0.25,3.7,8.5,concrete);
-
-// Piso inferior
-box(0,-3.25,-10.3,3.4,0.3,4.5,floorMaterial);
-
-// Paredes do corredor inferior
-box(-1.85,-2.1,-10.3,0.25,3.5,4.5,concrete);
-box(1.85,-2.1,-10.3,0.25,3.5,4.5,concrete);
-box(0,-2.1,-12.55,3.8,3.5,0.25,concrete);
-
-// Luz distante no porão
-const basementLight = new THREE.PointLight(
-  0x9b5630, 0.9, 6
-);
-
-basementLight.position.set(0,-2.1,-11.7);
-scene.add(basementLight);
-
-// =================================
-// POEIRA NO AR
-// =================================
-
-const dustCount = 180;
-const dustPositions = [];
-
-for(let i=0;i<dustCount;i++) {
-  dustPositions.push(
-    (Math.random()-0.5)*11,
-    Math.random()*4.5,
-    (Math.random()-0.5)*11
-  );
-}
-
-const dustGeometry = new THREE.BufferGeometry();
-
-dustGeometry.setAttribute(
-  "position",
-  new THREE.Float32BufferAttribute(dustPositions,3)
-);
-
-const dustMaterial = new THREE.PointsMaterial({
-  color:0xb8b2a5,
-  size:0.025,
-  transparent:true,
-  opacity:0.42
-});
-
-const dust = new THREE.Points(dustGeometry,dustMaterial);
-scene.add(dust);
-
-// =================================
-// CONTROLES
-// =================================
-
-const keys = {};
-
-addEventListener("keydown",e=>{
-  keys[e.key.toLowerCase()]=true;
-});
-
-addEventListener("keyup",e=>{
-  keys[e.key.toLowerCase()]=false;
-});
-
-// Botões para celular
-document.querySelectorAll("[data-key]").forEach(button=>{
-  const key=button.dataset.key;
-
-  button.addEventListener("pointerdown",e=>{
-    e.preventDefault();
-    keys[key]=true;
-  });
-
-  for(const event of [
-    "pointerup","pointerleave","pointercancel"
-  ]) {
-    button.addEventListener(event,()=>{
-      keys[key]=false;
-    });
-  }
-});
-
-// =================================
-// CÂMERA
-// =================================
-
-let yaw=0;
-let pitch=0;
-
-renderer.domElement.addEventListener("click",()=>{
-  if(!matchMedia("(pointer:coarse)").matches) {
-    renderer.domElement.requestPointerLock?.();
-  }
-});
-
-document.addEventListener("mousemove",e=>{
-  if(document.pointerLockElement===renderer.domElement) {
-    yaw-=e.movementX*0.002;
-    pitch-=e.movementY*0.002;
-    pitch=THREE.MathUtils.clamp(pitch,-1.2,1.2);
-  }
-});
-
-// Toque para olhar
-let dragging=false;
-let lastX=0;
-let lastY=0;
-
-renderer.domElement.addEventListener("pointerdown",e=>{
-  if(e.pointerType==="touch") {
-    dragging=true;
-    lastX=e.clientX;
-    lastY=e.clientY;
-  }
-});
-
-renderer.domElement.addEventListener("pointermove",e=>{
-  if(dragging && e.pointerType==="touch") {
-    yaw-=(e.clientX-lastX)*0.006;
-    pitch-=(e.clientY-lastY)*0.006;
-
-    pitch=THREE.MathUtils.clamp(pitch,-1.2,1.2);
-
-    lastX=e.clientX;
-    lastY=e.clientY;
-  }
-});
-
-renderer.domElement.addEventListener("pointerup",()=>{
-  dragging=false;
-});
-
-renderer.domElement.addEventListener("pointercancel",()=>{
-  dragging=false;
-});
-
-// =================================
-// COLISÕES E ESCADA
-// =================================
-
-function blocked(x,z) {
-  const radius=0.3;
-
-  // Limites da casa
-  if(x < -5.65 || x > 5.65) return true;
-  if(z > 5.65) return true;
-
-  // Parede do fundo: deixa a passagem central livre
-  if(z < -5.8 && Math.abs(x)>1.8) return true;
-
-  // Laterais da escada
-  if(z < -2.2 && z > -10.1 && Math.abs(x)>1.5) {
-    return true;
-  }
-
-  // Paredes do corredor inferior
-  if(z <= -10.1 && Math.abs(x)>1.45) return true;
-
-  // Obstáculos adicionais
-  for(const c of colliders) {
-    if(
-      Math.abs(x-c.x)<c.halfW+radius &&
-      Math.abs(z-c.z)<c.halfD+radius
-    ) return true;
-  }
-
-  return false;
-}
-
-// Altura do jogador ao descer os degraus
-function stairHeight(z) {
-  const start=-2.2;
-  const end=-9.8;
-
-  const progress=THREE.MathUtils.clamp(
-    (start-z)/(start-end),0,1
-  );
-
-  return 1.7-progress*4.0;
-}
-
-// =================================
-// INÍCIO
-// =================================
-
-let started=false;
-
-document.getElementById("enter").onclick=()=>{
-  started=true;
-  document.getElementById("start").style.display="none";
-};
-
-// =================================
-// MOVIMENTO
-// =================================
-
-function updatePlayer() {
-  if(!started) return;
-
-  const direction=new THREE.Vector3();
-
-  if(keys.w||keys.arrowup) direction.z-=1;
-  if(keys.s||keys.arrowdown) direction.z+=1;
-  if(keys.a||keys.arrowleft) direction.x-=1;
-  if(keys.d||keys.arrowright) direction.x+=1;
-
-  if(direction.lengthSq()>0) {
-    direction.normalize();
-
-    direction.applyAxisAngle(
-      new THREE.Vector3(0,1,0),yaw
-    );
-
-    const speed=0.055;
-
-    const nextX=camera.position.x+direction.x*speed;
-    const nextZ=camera.position.z+direction.z*speed;
-
-    const onStairs =
-      nextZ < -2.2 &&
-      nextZ > -10.1 &&
-      Math.abs(nextX)<1.5;
-
-    const nextY = onStairs
-      ? stairHeight(nextZ)
-      : (nextZ<=-10.1 ? -2.3 : 1.7);
-
-    if(!blocked(nextX,camera.position.z)) {
-      camera.position.x=nextX;
-    }
-
-    if(!blocked(camera.position.x,nextZ)) {
-      camera.position.z=nextZ;
-
-      if(
-        Math.abs(camera.position.x)<1.5 &&
-        camera.position.z < -2.2
-      ) {
-        camera.position.y=nextY;
-      } else {
-        camera.position.y=1.7;
-      }
-    }
-  }
-}
-
-// =================================
-// ANIMAÇÃO
-// =================================
-
-let elapsed=0;
-
-function animate() {
-  requestAnimationFrame(animate);
-
-  elapsed+=0.016;
-
-  camera.rotation.order="YXZ";
-  camera.rotation.y=yaw;
-  camera.rotation.x=pitch;
-
-  updatePlayer();
-
-  // Pequena oscilação da iluminação distante
-  weakRoomLight.intensity =
-    0.65 + Math.sin(elapsed*1.8)*0.045;
-
-  basementLight.intensity =
-    0.85 + Math.sin(elapsed*2.1)*0.08;
-
-  // Movimento sutil da poeira
-  const positions=dust.geometry.attributes.position;
-
-  for(let i=0;i<dustCount;i++) {
-    positions.array[i*3+1]+=0.0015;
-
-    if(positions.array[i*3+1]>5) {
-      positions.array[i*3+1]=0;
-    }
-  }
-
-  positions.needsUpdate=true;
-
-  renderer.render(scene,camera);
-}
-
-animate();
-
-// REDIMENSIONAR
-addEventListener("resize",()=>{
-  camera.aspect=innerWidth/innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth,innerHeight);
-});
-</script>
 </body>
 </html>
