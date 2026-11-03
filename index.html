@@ -19,16 +19,16 @@ body {
   height: 100vh;
   overflow: hidden;
   font-family: Arial, sans-serif;
-  background: #000;
+  background: black;
 }
 
 #start {
   position: fixed;
   inset: 0;
   background:
-    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)),
+    linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.65)),
     url("video%20da%20tela%20inicial%20AB%20GAMES.gif")
-    center center / cover no-repeat;
+    center / cover no-repeat;
 }
 
 #brand {
@@ -39,7 +39,6 @@ body {
   font-size: 22px;
   font-weight: bold;
   letter-spacing: 4px;
-  text-shadow: 0 2px 10px black;
 }
 
 h1 {
@@ -51,8 +50,7 @@ h1 {
   font-family: 'Creepster', Georgia, serif;
   font-size: clamp(80px, 11vw, 145px);
   font-weight: normal;
-  line-height: 0.85;
-  letter-spacing: 5px;
+  line-height: .85;
   text-align: right;
   transform: translateY(-50%) rotate(-8deg);
   text-shadow: 0 0 18px #8b0000, 2px 3px 18px black;
@@ -68,14 +66,12 @@ h1 {
   font-family: 'Creepster', Georgia, serif;
   font-size: 48px;
   letter-spacing: 3px;
-  text-shadow: 0 0 12px #8b0000, 2px 3px 12px black;
   cursor: pointer;
-  transition: 0.3s;
+  text-shadow: 0 0 12px #8b0000, 2px 3px 12px black;
 }
 
 .menu-button:hover {
   color: #ff3333;
-  transform: scale(1.12);
 }
 
 #jogar { top: 43%; }
@@ -85,12 +81,11 @@ h1 {
   position: absolute;
   right: 25px;
   bottom: 25px;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,.5);
   border: 1px solid #777;
   border-radius: 5px;
   padding: 10px 15px;
   color: white;
-  font-size: 12px;
   cursor: pointer;
 }
 
@@ -99,31 +94,23 @@ h1 {
   position: fixed;
   inset: 0;
   z-index: 10;
-  background:
-    linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.96)),
-    url("video%20da%20tela%20inicial%20AB%20GAMES.gif")
-    center / cover no-repeat;
+  background: linear-gradient(#111, #000);
   color: white;
-  text-align: center;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  text-align: center;
 }
 
 #credits-screen h2 {
   color: #e00000;
   font-family: 'Creepster', Georgia, serif;
-  font-size: 75px;
-  font-weight: normal;
-  margin: 0 0 35px;
-  text-shadow: 0 0 18px #8b0000;
+  font-size: 70px;
 }
 
 .credit-line {
-  font-size: 21px;
-  letter-spacing: 2px;
+  font-size: 20px;
   margin: 13px;
-  text-shadow: 0 2px 10px black;
 }
 
 .credit-line strong {
@@ -132,18 +119,15 @@ h1 {
 
 #back-button {
   position: static;
-  margin-top: 35px;
-  font-size: 38px;
+  margin-top: 30px;
 }
-
-/* TELA DA INTRODUÇÃO */
 
 #intro-screen {
   display: none;
   position: fixed;
   inset: 0;
   z-index: 20;
-  background: #000;
+  background: black;
   align-items: center;
   justify-content: center;
 }
@@ -163,8 +147,8 @@ h1 {
 }
 
 #video-error button {
-  margin-top: 15px;
   padding: 12px 20px;
+  margin-top: 15px;
   background: #8b0000;
   color: white;
   border: none;
@@ -179,7 +163,6 @@ h1 {
   color: #aaa;
   font-size: 11px;
   letter-spacing: 3px;
-  text-shadow: 0 2px 10px black;
 }
 
 @media (max-width: 600px) {
@@ -204,16 +187,6 @@ h1 {
 
   .credit-line {
     font-size: 16px;
-    letter-spacing: 1px;
-  }
-
-  #back-button {
-    font-size: 32px;
-  }
-
-  #footer {
-    font-size: 9px;
-    letter-spacing: 2px;
   }
 }
 </style>
@@ -231,15 +204,18 @@ h1 {
 
   <h1>O ÚLTIMO<br>SINAL</h1>
 
-  <button type="button" class="menu-button" id="jogar">
+  <button type="button" class="menu-button" id="jogar"
+    onclick="iniciarJogo()">
     JOGAR
   </button>
 
-  <button type="button" class="menu-button" id="creditos">
+  <button type="button" class="menu-button" id="creditos"
+    onclick="abrirCreditos()">
     CRÉDITOS
   </button>
 
-  <button type="button" id="sound-button">
+  <button type="button" id="sound-button"
+    onclick="alternarSom()">
     🔊 ATIVAR SOM
   </button>
 
@@ -253,4 +229,115 @@ h1 {
 
   <h2>CRÉDITOS</h2>
 
-  <p class="credit-line
+  <p class="credit-line">
+    RESPONSÁVEL: <strong>Victor Hugo Cesário Velloso</strong>
+  </p>
+
+  <p class="credit-line">
+    DESENVOLVEDOR: <strong>Hebert Renan Velloso</strong>
+  </p>
+
+  <p class="credit-line">
+    <strong>AB GAMES</strong>
+  </p>
+
+  <button type="button" class="menu-button"
+    id="back-button" onclick="voltarMenu()">
+    VOLTAR
+  </button>
+
+</div>
+
+<div id="intro-screen">
+
+  <video id="intro-video" playsinline preload="auto">
+    <source
+      src="https://raw.githubusercontent.com/abgamesbr/O-ULTIMO-SINAL./main/curtoVideoOficalAB.GAMES.mp4"
+      type="video/mp4">
+  </video>
+
+  <div id="video-error">
+    Não foi possível reproduzir a introdução.
+    <br>
+    <button type="button" onclick="entrarNoJogo()">
+      CONTINUAR PARA O JOGO
+    </button>
+  </div>
+
+</div>
+
+<script>
+function alternarSom() {
+  var audio = document.getElementById("menu-audio");
+  var button = document.getElementById("sound-button");
+
+  if (audio.paused) {
+    audio.play().then(function() {
+      button.textContent = "🔇 DESLIGAR SOM";
+    }).catch(function() {
+      button.textContent = "SOM INDISPONÍVEL";
+    });
+  } else {
+    audio.pause();
+    button.textContent = "🔊 ATIVAR SOM";
+  }
+}
+
+function iniciarJogo() {
+  var audio = document.getElementById("menu-audio");
+  var menu = document.getElementById("start");
+  var credits = document.getElementById("credits-screen");
+  var intro = document.getElementById("intro-screen");
+  var video = document.getElementById("intro-video");
+  var error = document.getElementById("video-error");
+
+  audio.pause();
+
+  menu.style.display = "none";
+  credits.style.display = "none";
+  intro.style.display = "flex";
+  error.style.display = "none";
+
+  video.currentTime = 0;
+
+  video.play().catch(function() {
+    error.style.display = "block";
+  });
+}
+
+function abrirCreditos() {
+  document.getElementById("start").style.display = "none";
+  document.getElementById("credits-screen").style.display = "flex";
+
+  document.getElementById("menu-audio").pause();
+  document.getElementById("sound-button").textContent = "🔊 ATIVAR SOM";
+}
+
+function voltarMenu() {
+  document.getElementById("credits-screen").style.display = "none";
+  document.getElementById("start").style.display = "block";
+}
+
+function entrarNoJogo() {
+  document.getElementById("intro-video").pause();
+
+  window.location.href =
+    "https://abgamesbr.github.io/AB-O-ULTIMO-SINAL-JOGO/";
+}
+
+document.getElementById("intro-video").addEventListener(
+  "ended",
+  entrarNoJogo
+);
+
+document.getElementById("intro-video").addEventListener(
+  "error",
+  function() {
+    document.getElementById("video-error").style.display = "block";
+  }
+);
+</script>
+
+</body>
+</html>
+```
