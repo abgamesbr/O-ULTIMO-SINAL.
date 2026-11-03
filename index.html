@@ -66,7 +66,10 @@ body {
   position: fixed;
   inset: 0;
   z-index: 20;
-  background: radial-gradient(#202329,#08090b 60%,#000);
+  background:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.65)),
+    url("video%20da%20tela%20inicial%20AB%20GAMES.gif")
+    center center / cover no-repeat;
   color: white;
   display: flex;
   flex-direction: column;
@@ -80,21 +83,28 @@ body {
   color: #36aaff;
   letter-spacing: 5px;
   font-size: 30px;
+  text-shadow: 0 3px 15px #000;
 }
 
 #start p {
-  color: #aaa;
+  color: #ddd;
   font-size: 13px;
+  text-shadow: 0 2px 8px #000;
 }
 
 #start button {
   padding: 15px 38px;
   background: #087bc5;
-  border: 0;
+  border: 1px solid #48baff;
   border-radius: 6px;
   color: white;
   font-size: 16px;
   margin-top: 15px;
+  cursor: pointer;
+}
+
+#start button:hover {
+  background: #159be9;
 }
 
 #controls {
