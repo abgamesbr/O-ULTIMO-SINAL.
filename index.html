@@ -4,7 +4,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>AB GAMES — O Último Sinal</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
@@ -137,14 +136,14 @@ h1 {
   font-size: 38px;
 }
 
-/* INTRODUÇÃO */
+/* TELA DA INTRODUÇÃO */
 
 #intro-screen {
   display: none;
   position: fixed;
   inset: 0;
   z-index: 20;
-  background: black;
+  background: #000;
   align-items: center;
   justify-content: center;
 }
@@ -191,13 +190,11 @@ h1 {
   }
 
   h1 {
-    top: 50%;
     right: 15px;
     font-size: 78px;
   }
 
   .menu-button {
-    left: 7%;
     font-size: 38px;
   }
 
@@ -234,15 +231,15 @@ h1 {
 
   <h1>O ÚLTIMO<br>SINAL</h1>
 
-  <button class="menu-button" id="jogar" onclick="iniciarJogo()">
+  <button type="button" class="menu-button" id="jogar">
     JOGAR
   </button>
 
-  <button class="menu-button" id="creditos" onclick="abrirCreditos()">
+  <button type="button" class="menu-button" id="creditos">
     CRÉDITOS
   </button>
 
-  <button id="sound-button" onclick="alternarSom()">
+  <button type="button" id="sound-button">
     🔊 ATIVAR SOM
   </button>
 
@@ -256,17 +253,4 @@ h1 {
 
   <h2>CRÉDITOS</h2>
 
-  <p class="credit-line">
-    RESPONSÁVEL: <strong>Victor Hugo Cesário Velloso</strong>
-  </p>
-
-  <p class="credit-line">
-    DESENVOLVEDOR: <strong>Hebert Renan Velloso</strong>
-  </p>
-
-  <p class="credit-line">
-    <strong>AB GAMES</strong>
-  </p>
-
-  <button class="menu-button" id="back-button" onclick="voltarMenu()">
-    VOLT
+  <p class="credit-line
