@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>AB GAMES — O Último Sinal</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
@@ -25,48 +26,83 @@ body {
 #start {
   position: fixed;
   inset: 0;
+
   background:
-    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)),
+    linear-gradient(
+      rgba(0,0,0,0.35),
+      rgba(0,0,0,0.65)
+    ),
     url("video%20da%20tela%20inicial%20AB%20GAMES.gif")
     center center / cover no-repeat;
 }
 
+/* LOGO AB GAMES */
 #brand {
   position: absolute;
   top: 25px;
   left: 25px;
+
   color: #35aaff;
   font-size: 22px;
   font-weight: bold;
   letter-spacing: 4px;
+
   text-shadow: 0 2px 10px black;
 }
 
+/* TÍTULO DE TERROR */
 h1 {
   position: absolute;
-  top: 22px;
+  top: 20px;
   right: 30px;
+
   margin: 0;
-  color: #c90000;
+
+  color: #e00000;
   font-family: 'Creepster', Georgia, serif;
-  font-size: clamp(27px, 4vw, 48px);
+  font-size: clamp(45px, 7vw, 85px);
   font-weight: normal;
-  letter-spacing: 3px;
+  line-height: 0.9;
+  letter-spacing: 4px;
   text-align: right;
+
   text-shadow:
-    0 0 8px #8b0000,
+    0 0 12px #8b0000,
     2px 3px 12px black;
 }
 
+/* FRASE INFERIOR */
 #footer {
   position: absolute;
   bottom: 20px;
   width: 100%;
+
   text-align: center;
   color: #aaa;
   font-size: 11px;
   letter-spacing: 3px;
+
   text-shadow: 0 2px 10px black;
+}
+
+/* AJUSTE PARA CELULAR */
+@media (max-width: 600px) {
+  #brand {
+    top: 18px;
+    left: 15px;
+    font-size: 16px;
+  }
+
+  h1 {
+    top: 65px;
+    right: 15px;
+    font-size: 55px;
+  }
+
+  #footer {
+    font-size: 9px;
+    letter-spacing: 2px;
+  }
 }
 </style>
 </head>
@@ -74,13 +110,20 @@ h1 {
 <body>
 
 <div id="start">
-  <div id="brand">AB GAMES</div>
 
-  <h1>O ÚLTIMO SINAL</h1>
+  <div id="brand">
+    AB GAMES
+  </div>
+
+  <h1>
+    O ÚLTIMO<br>
+    SINAL
+  </h1>
 
   <div id="footer">
     UMA EXPERIÊNCIA DE TERROR E SUSPENSE
   </div>
+
 </div>
 
 </body>
