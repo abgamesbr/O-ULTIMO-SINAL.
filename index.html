@@ -88,6 +88,20 @@ h1 {
   top: 53%;
 }
 
+/* BOTÃO DE SOM */
+#sound-button {
+  position: absolute;
+  right: 25px;
+  bottom: 25px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid #777;
+  border-radius: 5px;
+  padding: 10px 15px;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+}
+
 /* TELA DE CRÉDITOS */
 #credits-screen {
   display: none;
@@ -183,6 +197,10 @@ h1 {
 
 <body>
 
+<audio id="menu-audio" loop preload="auto">
+  <source src="efeito%20sonoro%20tela%20inicial%20do%20jogo%20ULTIMO%20SINAL%20-%20AB%20GAMES.mp3" type="audio/mpeg">
+</audio>
+
 <div id="start">
 
   <div id="brand">AB GAMES</div>
@@ -195,6 +213,10 @@ h1 {
 
   <button class="menu-button" id="creditos" onclick="abrirCreditos()">
     CRÉDITOS
+  </button>
+
+  <button id="sound-button" onclick="alternarSom()">
+    🔊 ATIVAR SOM
   </button>
 
   <div id="footer">
@@ -226,9 +248,30 @@ h1 {
 </div>
 
 <script>
+const audio = document.getElementById("menu-audio");
+const soundButton = document.getElementById("sound-button");
+
+audio.volume = 0.25;
+
+async function alternarSom() {
+  if (audio.paused) {
+    try {
+      await audio.play();
+      soundButton.textContent = "🔇 DESLIGAR SOM";
+    } catch (erro) {
+      soundButton.textContent = "SOM INDISPONÍVEL";
+    }
+  } else {
+    audio.pause();
+    soundButton.textContent = "🔊 ATIVAR SOM";
+  }
+}
+
 function abrirCreditos() {
   document.getElementById("start").style.display = "none";
   document.getElementById("credits-screen").style.display = "flex";
+  audio.pause();
+  soundButton.textContent = "🔊 ATIVAR SOM";
 }
 
 function voltarMenu() {
