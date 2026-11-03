@@ -1,0 +1,242 @@
+# O-ULTIMO-SINAL.
+AB GAMES - O Último Sinal
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AB GAMES - O Último Sinal</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #050505;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+canvas { display: block; }
+#hud {
+  position: fixed;
+  top: 15px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+  text-shadow: 0 0 10px #168bff;
+}
+#message {
+  color: #b9d9ff;
+  font-size: 14px;
+}
+#controls {
+  position: fixed;
+  bottom: 20px;
+  left: 15px;
+  display: grid;
+  grid-template-columns: repeat(3, 55px);
+  gap: 5px;
+}
+button {
+  width: 55px;
+  height: 55px;
+  border: 1px solid #168bff;
+  border-radius: 10px;
+  color: white;
+  background: #101c30dd;
+  font-size: 20px;
+  touch-action: none;
+}
+#flash {
+  position: fixed;
+  bottom: 25px;
+  right: 20px;
+  width: 75px;
+  height: 65px;
+  font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div id="hud">
+  <h2>AB GAMES — O ÚLTIMO SINAL</h2>
+  <div id="message">Explore a casa abandonada...</div>
+</div>
+
+<div id="controls">
+  <span></span><button data-key="w">▲</button><span></span>
+  <button data-key="a">◀</button>
+  <button data-key="s">▼</button>
+  <button data-key="d">▶</button>
+</div>
+
+<button id="flash">LANTERNA</button>
+
+<script type="module">
+import * as THREE from
+'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x020305);
+scene.fog = new THREE.Fog(0x020305, 5, 22);
+
+const camera = new THREE.PerspectiveCamera(
+  75, window.innerWidth / window.innerHeight, 0.1, 100
+);
+camera.position.set(0, 1.7, 5);
+scene.add(camera);
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+document.body.appendChild(renderer.domElement);
+
+scene.add(new THREE.AmbientLight(0x303746, 0.35));
+
+function material(color) {
+  return new THREE.MeshStandardMaterial({
+    color,
+    roughness: 0.95
+  });
+}
+
+function box(x,y,z,w,h,d,color) {
+  const mesh = new THREE.Mesh(
+    new THREE.BoxGeometry(w,h,d), material(color)
+  );
+  mesh.position.set(x,y,z);
+  scene.add(mesh);
+  return mesh;
+}
+
+// Casa abandonada
+box(0,-0.15,0,12,0.3,14,0x292a29);
+box(0,3.2,-7,12,6.4,0.3,0x292b2d);
+box(-6,3.2,0,0.3,6.4,14,0x292b2d);
+box(6,3.2,0,0.3,6.4,14,0x292b2d);
+box(0,6.4,0,12,0.3,14,0x17191c);
+
+// Escada subterrânea
+box(0,-0.2,-4,3,0.3,4,0x111820);
+
+for(let i=0;i<9;i++){
+  box(0,-0.12-i*0.27,-2.8-i*0.38,2.8,0.2,0.5,0x41413e);
+}
+
+// Paredes laterais da escada
+box(-1.65,-0.1,-4,0.2,2.8,5,0x25282b);
+box(1.65,-0.1,-4,0.2,2.8,5,0x25282b);
+
+// Escrita na parede
+const canvasText = document.createElement('canvas');
+canvasText.width = 1024;
+canvasText.height = 256;
+const c = canvasText.getContext('2d');
+c.fillStyle = '#292b2d';
+c.fillRect(0,0,1024,256);
+c.font = 'bold 65px Arial';
+c.textAlign = 'center';
+c.fillStyle = '#a51d1d';
+c.fillText('QUEM ENTRA TEM QUE',512,100);
+c.fillText('TER SORTE PRA SAIR',512,180);
+
+const texture = new THREE.CanvasTexture(canvasText);
+const sign = new THREE.Mesh(
+  new THREE.PlaneGeometry(5,1.25),
+  new THREE.MeshBasicMaterial({map:texture})
+);
+sign.position.set(0,2.5,-6.78);
+scene.add(sign);
+
+// Lanterna
+const flashlight = new THREE.SpotLight(
+  0xffe9bd, 35, 18, Math.PI/7, 0.4, 1.5
+);
+camera.add(flashlight);
+flashlight.position.set(0,0,0);
+flashlight.target.position.set(0,0,-1);
+camera.add(flashlight.target);
+
+let keys = {};
+let yaw = 0;
+let pitch = 0;
+let flashlightOn = true;
+
+document.addEventListener('keydown',e=>{
+  keys[e.key.toLowerCase()] = true;
+});
+document.addEventListener('keyup',e=>{
+  keys[e.key.toLowerCase()] = false;
+});
+
+document.querySelectorAll('[data-key]').forEach(btn=>{
+  const k=btn.dataset.key;
+  btn.addEventListener('pointerdown',e=>{
+    e.preventDefault();
+    keys[k]=true;
+  });
+  ['pointerup','pointerleave','pointercancel'].forEach(ev=>{
+    btn.addEventListener(ev,()=>keys[k]=false);
+  });
+});
+
+document.getElementById('flash').onclick=()=>{
+  flashlightOn=!flashlightOn;
+  flashlight.visible=flashlightOn;
+};
+
+let dragging=false;
+let lastX=0,lastY=0;
+
+renderer.domElement.addEventListener('pointerdown',e=>{
+  dragging=true;
+  lastX=e.clientX;
+  lastY=e.clientY;
+});
+window.addEventListener('pointerup',()=>dragging=false);
+window.addEventListener('pointermove',e=>{
+  if(!dragging)return;
+  yaw-=(e.clientX-lastX)*0.004;
+  pitch-=(e.clientY-lastY)*0.004;
+  pitch=Math.max(-1.2,Math.min(1.2,pitch));
+  lastX=e.clientX;
+  lastY=e.clientY;
+});
+
+function animate(){
+  requestAnimationFrame(animate);
+
+  const speed=0.055;
+  const direction=new THREE.Vector3();
+
+  if(keys.w||keys.arrowup) direction.z-=1;
+  if(keys.s||keys.arrowdown) direction.z+=1;
+  if(keys.a||keys.arrowleft) direction.x-=1;
+  if(keys.d||keys.arrowright) direction.x+=1;
+
+  direction.normalize();
+  direction.applyAxisAngle(new THREE.Vector3(0,1,0),yaw);
+
+  camera.position.x+=direction.x*speed;
+  camera.position.z+=direction.z*speed;
+
+  camera.position.x=THREE.MathUtils.clamp(camera.position.x,-5.4,5.4);
+  camera.position.z=THREE.MathUtils.clamp(camera.position.z,-6.2,5.5);
+
+  camera.rotation.order='YXZ';
+  camera.rotation.set(pitch,yaw,0);
+
+  renderer.render(scene,camera);
+}
+
+window.addEventListener('resize',()=>{
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth,window.innerHeight);
+});
+
+animate();
+</script>
+</body>
+</html>
