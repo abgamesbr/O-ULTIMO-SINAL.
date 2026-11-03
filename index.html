@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -40,7 +39,6 @@ body {
   font-size: 22px;
   font-weight: bold;
   letter-spacing: 4px;
-  text-shadow: 0 2px 10px black;
 }
 
 h1 {
@@ -56,7 +54,6 @@ h1 {
   letter-spacing: 5px;
   text-align: right;
   transform: translateY(-50%) rotate(-8deg);
-  transform-origin: center right;
   text-shadow: 0 0 18px #8b0000, 2px 3px 18px black;
 }
 
@@ -80,13 +77,8 @@ h1 {
   transform: scale(1.12);
 }
 
-#jogar {
-  top: 43%;
-}
-
-#creditos {
-  top: 53%;
-}
+#jogar { top: 43%; }
+#creditos { top: 53%; }
 
 #sound-button {
   position: absolute;
@@ -123,14 +115,12 @@ h1 {
   font-size: 75px;
   font-weight: normal;
   margin: 0 0 35px;
-  text-shadow: 0 0 18px #8b0000;
 }
 
 .credit-line {
   font-size: 21px;
   letter-spacing: 2px;
   margin: 13px;
-  text-shadow: 0 2px 10px black;
 }
 
 .credit-line strong {
@@ -143,6 +133,41 @@ h1 {
   font-size: 38px;
 }
 
+/* TELA DO VÍDEO */
+
+#intro-screen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: black;
+  align-items: center;
+  justify-content: center;
+}
+
+#intro-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#video-error {
+  display: none;
+  position: absolute;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+#video-error button {
+  margin-top: 15px;
+  padding: 12px 20px;
+  background: #8b0000;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
 #footer {
   position: absolute;
   bottom: 20px;
@@ -151,7 +176,6 @@ h1 {
   color: #aaa;
   font-size: 11px;
   letter-spacing: 3px;
-  text-shadow: 0 2px 10px black;
 }
 
 @media (max-width: 600px) {
@@ -162,13 +186,11 @@ h1 {
   }
 
   h1 {
-    top: 50%;
     right: 15px;
     font-size: 78px;
   }
 
   .menu-button {
-    left: 7%;
     font-size: 38px;
   }
 
@@ -178,16 +200,10 @@ h1 {
 
   .credit-line {
     font-size: 16px;
-    letter-spacing: 1px;
   }
 
   #back-button {
     font-size: 32px;
-  }
-
-  #footer {
-    font-size: 9px;
-    letter-spacing: 2px;
   }
 }
 </style>
@@ -245,9 +261,24 @@ h1 {
 
 </div>
 
+<div id="intro-screen">
+
+  <video id="intro-video" playsinline preload="auto">
+    <source src="./CurtoVideoOficialAB.GAMES.mp4" type="video/mp4">
+  </video>
+
+  <div id="video-error">
+    Não foi possível reproduzir a introdução.
+    <br>
+    <button onclick="entrarNoJogo()">CONTINUAR PARA O JOGO</button>
+  </div>
+
+</div>
+
 <script>
 const audio = document.getElementById("menu-audio");
 const soundButton = document.getElementById("sound-button");
+const video = document.getElementById("intro-video");
 
 audio.volume = 0.25;
 
@@ -265,8 +296,26 @@ async function alternarSom() {
   }
 }
 
-function iniciarJogo() {
+async function iniciarJogo() {
   audio.pause();
+
+  document.getElementById("start").style.display = "none";
+  document.getElementById("credits-screen").style.display = "none";
+  document.getElementById("intro-screen").style.display = "flex";
+
+  video.currentTime = 0;
+
+  try {
+    await video.play();
+  } catch (erro) {
+    document.getElementById("video-error").style.display = "block";
+  }
+}
+
+video.addEventListener("ended", entrarNoJogo);
+
+function entrarNoJogo() {
+  video.pause();
 
   window.location.href =
     "https://abgamesbr.github.io/AB-O-ULTIMO-SINAL-JOGO/";
