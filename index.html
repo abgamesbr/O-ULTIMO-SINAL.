@@ -32,7 +32,6 @@ body {
     center center / cover no-repeat;
 }
 
-/* LOGO AB GAMES */
 #brand {
   position: absolute;
   top: 25px;
@@ -44,13 +43,11 @@ body {
   text-shadow: 0 2px 10px black;
 }
 
-/* TÍTULO DE TERROR */
 h1 {
   position: absolute;
   top: 50%;
   right: 30px;
   margin: 0;
-
   color: #e00000;
   font-family: 'Creepster', Georgia, serif;
   font-size: clamp(80px, 11vw, 145px);
@@ -58,42 +55,82 @@ h1 {
   line-height: 0.85;
   letter-spacing: 5px;
   text-align: right;
-
   transform: translateY(-50%) rotate(-8deg);
   transform-origin: center right;
-
-  text-shadow:
-    0 0 18px #8b0000,
-    2px 3px 18px black;
+  text-shadow: 0 0 18px #8b0000, 2px 3px 18px black;
 }
 
-/* JOGAR */
-#jogar {
+.menu-button {
   position: absolute;
-  top: 50%;
   left: 7%;
-  transform: translateY(-50%);
-
   background: transparent;
   border: none;
   padding: 0;
-
   color: #e00000;
   font-family: 'Creepster', Georgia, serif;
   font-size: 48px;
   letter-spacing: 3px;
-
   text-shadow: 0 0 12px #8b0000, 2px 3px 12px black;
   cursor: pointer;
   transition: 0.3s;
 }
 
-#jogar:hover {
+.menu-button:hover {
   color: #ff3333;
-  transform: translateY(-50%) scale(1.12);
+  transform: scale(1.12);
 }
 
-/* FRASE INFERIOR */
+#jogar {
+  top: 43%;
+}
+
+#creditos {
+  top: 53%;
+}
+
+/* TELA DE CRÉDITOS */
+#credits-screen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background:
+    linear-gradient(rgba(0,0,0,0.88), rgba(0,0,0,0.96)),
+    url("video%20da%20tela%20inicial%20AB%20GAMES.gif")
+    center / cover no-repeat;
+  color: white;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#credits-screen h2 {
+  color: #e00000;
+  font-family: 'Creepster', Georgia, serif;
+  font-size: 75px;
+  font-weight: normal;
+  margin: 0 0 35px;
+  text-shadow: 0 0 18px #8b0000;
+}
+
+.credit-line {
+  font-size: 21px;
+  letter-spacing: 2px;
+  margin: 13px;
+  text-shadow: 0 2px 10px black;
+}
+
+.credit-line strong {
+  color: #35aaff;
+}
+
+#back-button {
+  position: static;
+  margin-top: 35px;
+  font-size: 38px;
+}
+
 #footer {
   position: absolute;
   bottom: 20px;
@@ -105,7 +142,6 @@ h1 {
   text-shadow: 0 2px 10px black;
 }
 
-/* CELULAR */
 @media (max-width: 600px) {
   #brand {
     top: 18px;
@@ -119,9 +155,22 @@ h1 {
     font-size: 78px;
   }
 
-  #jogar {
+  .menu-button {
     left: 7%;
     font-size: 38px;
+  }
+
+  #credits-screen h2 {
+    font-size: 55px;
+  }
+
+  .credit-line {
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+
+  #back-button {
+    font-size: 32px;
   }
 
   #footer {
@@ -140,13 +189,51 @@ h1 {
 
   <h1>O ÚLTIMO<br>SINAL</h1>
 
-  <button id="jogar">JOGAR</button>
+  <button class="menu-button" id="jogar">JOGAR</button>
+
+  <button class="menu-button" id="creditos" onclick="abrirCreditos()">
+    CRÉDITOS
+  </button>
 
   <div id="footer">
     UMA EXPERIÊNCIA DE TERROR E SUSPENSE
   </div>
 
 </div>
+
+<div id="credits-screen">
+
+  <h2>CRÉDITOS</h2>
+
+  <p class="credit-line">
+    RESPONSÁVEL: <strong>Victor Hugo Cesário Velloso</strong>
+  </p>
+
+  <p class="credit-line">
+    DESENVOLVEDOR: <strong>Hebert Renan Velloso</strong>
+  </p>
+
+  <p class="credit-line">
+    <strong>AB GAMES</strong>
+  </p>
+
+  <button class="menu-button" id="back-button" onclick="voltarMenu()">
+    VOLTAR
+  </button>
+
+</div>
+
+<script>
+function abrirCreditos() {
+  document.getElementById("start").style.display = "none";
+  document.getElementById("credits-screen").style.display = "flex";
+}
+
+function voltarMenu() {
+  document.getElementById("credits-screen").style.display = "none";
+  document.getElementById("start").style.display = "block";
+}
+</script>
 
 </body>
 </html>
