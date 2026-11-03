@@ -191,14 +191,28 @@ const floorMat = mat(0x30251d);
 const woodMat = mat(0x38251a);
 const darkMat = mat(0x151515);
 
-function box(x,y,z,w,h,d,material,rotationY=0) {
+const colliders = [];
+
+function box(x,y,z,w,h,d,material,rotationY=0,solid=false) {
   const obj = new THREE.Mesh(
     new THREE.BoxGeometry(w,h,d), material
   );
+
   obj.position.set(x,y,z);
   obj.rotation.y = rotationY;
   scene.add(obj);
+
+  if (solid) {
+    colliders.push({
+      x,
+      z,
+      halfW: w/2 + 0.35,
+      halfD: d/2 + 0.35
+    });
+  }
+
   return obj;
+}
 }
 
 // CASA MAIOR
@@ -238,7 +252,7 @@ for (const x of [-3,-0.1])
   box(x,0.7,z,0.16,1.5,0.16,woodMat);
 
 // Cadeiras
-function chair(x,z,angle) {
+ 
   box(x,0.9,z,1,0.18,1,woodMat,angle);
   box(x,1.7,z-0.42,1,1.5,0.16,woodMat,angle);
   box(x-0.4,0.35,z-0.4,0.14,0.9,0.14,woodMat,angle);
