@@ -88,7 +88,6 @@ h1 {
   top: 53%;
 }
 
-/* BOTÃO DE SOM */
 #sound-button {
   position: absolute;
   right: 25px;
@@ -102,7 +101,6 @@ h1 {
   cursor: pointer;
 }
 
-/* TELA DE CRÉDITOS */
 #credits-screen {
   display: none;
   position: fixed;
@@ -207,7 +205,7 @@ h1 {
 
   <h1>O ÚLTIMO<br>SINAL</h1>
 
-  <button class="menu-button" id="jogar">
+  <button class="menu-button" id="jogar" onclick="iniciarJogo()">
     JOGAR
   </button>
 
@@ -267,9 +265,17 @@ async function alternarSom() {
   }
 }
 
+function iniciarJogo() {
+  audio.pause();
+
+  window.location.href =
+    "https://abgamesbr.github.io/O-ULTIMO-SINAL./";
+}
+
 function abrirCreditos() {
   document.getElementById("start").style.display = "none";
   document.getElementById("credits-screen").style.display = "flex";
+
   audio.pause();
   soundButton.textContent = "🔊 ATIVAR SOM";
 }
